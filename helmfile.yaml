@@ -12,3 +12,20 @@ releases:
     version: 70.3.0
     values:
       - values/prometheus-values.yaml 
+
+  - name: blackbox-exporter
+    namespace: monitoring
+    createNamespace: true
+    chart: prometheus-community/prometheus-blackbox-exporter
+    version: 9.4.0
+    values:
+      - values/blackbox-exporter-values.yaml 
+      
+  - name: probes
+    namespace: monitoring
+    createNamespace: true
+    chart: ./charts/probes
+    needs:
+      - monitoring/blackbox-exporter
+    values:
+      - values/probes-values.yaml

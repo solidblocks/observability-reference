@@ -1,0 +1,37 @@
+{{- range .Values.probes }}
+{{- if not (hasKey . "enabled") -}}
+{{- $_ := set . "enabled" true -}}
+{{- end }}
+{{- if .enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "probes.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  interval: {{ .interval | default "30s" }}
+  scrapeTimeout: {{ .scrapeTimeout | default "15s" }}
+  module: {{ .module }}
+  targets:
+    staticConfig:
+      static:
+        - {{ .url }}
+  prober:
+    url:  blackbox-exporter-prometheus-blackbox-exporter:9115
+    path: /probe
+  metricRelabelings:
+  {{- with .metricRelabelings }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }} 

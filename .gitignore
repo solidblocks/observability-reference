@@ -28,9 +28,6 @@ terraform.rc
 
 # Helmfile specific
 .cache/
-charts/
-helmfile.lock
-releases/
 
 # macOS specific
 .DS_Store

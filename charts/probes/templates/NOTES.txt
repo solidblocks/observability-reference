@@ -1,0 +1,28 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your Blackbox Exporter probes have been configured to monitor the following Grafana.com endpoints:
+
+{{- range .Values.probes }}
+{{- if not (hasKey . "enabled") -}}
+{{- $_ := set . "enabled" true -}}
+{{- end }}
+{{- if .enabled }}
+- {{ .name }}: {{ .url }} ({{ .module }})
+{{- end }}
+{{- end }}
+
+To view the Grafana dashboard for these probes:
+1. Access Grafana (typically at http://localhost:3000 when port-forwarded)
+2. Navigate to Dashboards
+3. Look for the "Grafana.com Monitoring" dashboard
+
+The blackbox exporter is available at:
+  http://blackbox-exporter:9115/
+
+You can test the probes manually by visiting:
+  http://blackbox-exporter:9115/probe?target=https://grafana.com&module=https_2xx
+
+To check that Probe resources were created properly:
+  kubectl get probes -n {{ .Release.Namespace }}
+
+For more information, see the chart README.md 

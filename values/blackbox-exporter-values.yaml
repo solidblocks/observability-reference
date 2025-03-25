@@ -1,0 +1,78 @@
+config:
+  modules:
+    http_2xx:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        valid_status_codes: []  # Defaults to 2xx
+        method: GET
+        preferred_ip_protocol: "ip4" # defaults to "ip6"
+        ip_protocol_fallback: true
+        follow_redirects: true
+        tls_config:
+          insecure_skip_verify: false
+    
+    http_post_2xx:
+      prober: http
+      timeout: 5s
+      http:
+        method: POST
+        preferred_ip_protocol: "ip4"
+        follow_redirects: true
+    
+    https_2xx:
+      prober: http
+      timeout: 5s
+      http:
+        method: GET
+        preferred_ip_protocol: "ip4"
+        ip_protocol_fallback: true
+        follow_redirects: true
+        tls_config:
+          insecure_skip_verify: false
+    
+    tcp_connect:
+      prober: tcp
+      timeout: 5s
+      tcp:
+        preferred_ip_protocol: "ip4"
+    
+    icmp:
+      prober: icmp
+      timeout: 5s
+      icmp:
+        preferred_ip_protocol: "ip4"
+
+# Service configuration
+service:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9115"
+  type: ClusterIP
+
+# Resources to allocate
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Default ServiceMonitor configuration
+serviceMonitor:
+  enabled: true
+  labels:
+    release: prometheus
+  interval: 30s
+  scrapeTimeout: 10s
+  # Default targets to monitor
+  # You can add more targets in the additionalScrapeConfigs section of prometheus-values.yaml
+  targets:
+    - name: kubernetes-api
+      url: https://kubernetes.default.svc.cluster.local/healthz
+      module: http_2xx
+    - name: example-website
+      url: https://example.com
+      module: https_2xx 

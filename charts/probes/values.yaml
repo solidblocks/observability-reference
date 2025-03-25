@@ -1,0 +1,33 @@
+# Default values for the probes Helm chart
+nameOverride: ""
+fullnameOverride: ""
+
+# Define the probes to be created
+probes:
+  # Grafana website probe
+  - name: grafana-website
+    url: https://grafana.com
+    module: https_2xx
+    interval: 30s
+    labels:
+      app: blackbox-exporter
+      category: website
+    annotations:
+      description: "Probe for Grafana website"
+  
+  # Example of another probe that can be enabled/disabled as needed
+  - name: prometheus-website
+    url: https://prometheus.io
+    module: https_2xx
+    interval: 60s
+    labels:
+      app: blackbox-exporter
+      category: website
+    annotations:
+      description: "Probe for Prometheus website"
+    enabled: false  # This probe is disabled by default
+
+# Common Labels to apply to all resources
+commonLabels:
+  created-by: helm
+  component: monitoring 
