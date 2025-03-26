@@ -10,6 +10,7 @@ probes:
       app: blackbox-exporter
       category: website
       importance: high
+      team: frontend
     annotations:
       description: "Detailed probe for Grafana website"
       team: "monitoring"
@@ -22,6 +23,7 @@ probes:
     labels:
       app: blackbox-exporter
       category: api
+      team: backend
     annotations:
       description: "Health check for Grafana API"
       
@@ -33,6 +35,7 @@ probes:
     labels:
       app: blackbox-exporter
       category: content
+      team: content
     annotations:
       description: "Monitoring for Grafana Blog content"
       
@@ -44,6 +47,7 @@ probes:
     labels:
       app: blackbox-exporter
       category: content
+      team: documentation
     annotations:
       description: "Monitoring for Grafana Documentation" 
 

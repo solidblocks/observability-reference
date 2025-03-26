@@ -30,8 +30,9 @@ spec:
     url:  blackbox-exporter-prometheus-blackbox-exporter:9115
     path: /probe
   metricRelabelings:
-  {{- with .metricRelabelings }}
-  {{- toYaml . | nindent 2 }}
-  {{- end }}
+    - targetLabel: team
+      replacement: 'backend'
+    - targetLabel: environment
+      replacement: 'dev'
 {{- end }}
 {{- end }} 

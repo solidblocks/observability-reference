@@ -2,6 +2,8 @@
 repositories:
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
+  - name: kusionstack
+    url: https://kusionstack.github.io/charts
 
 # Releases section
 releases:
@@ -29,3 +31,10 @@ releases:
       - monitoring/blackbox-exporter
     values:
       - values/probes-values.yaml
+
+  - name: karpor
+    namespace: karpor
+    createNamespace: true
+    chart: kusionstack/karpor
+    values:
+      - values/karpor-values.yaml

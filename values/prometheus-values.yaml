@@ -6,6 +6,7 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    probeSelectorNilUsesHelmValues: false
     retention: 24h  # Adjust retention period as needed
     resources:
       requests:

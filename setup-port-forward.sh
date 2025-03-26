@@ -17,6 +17,7 @@ echo "Setting up port forwarding..."
 echo "Grafana will be available at http://localhost:3000"
 echo "Prometheus will be available at http://localhost:9090"
 echo "Alertmanager will be available at http://localhost:9093"
+echo "Karpor UI will be available at https://localhost:7443"
 echo "Press Ctrl+C to stop port forwarding"
 
 # Start port forwarding
@@ -31,6 +32,10 @@ echo "Prometheus port forwarding started (PID: $PROMETHEUS_PID)"
 kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-alertmanager 9093:9093 &
 ALERTMANAGER_PID=$!
 echo "Alertmanager port forwarding started (PID: $ALERTMANAGER_PID)"
+
+kubectl -n karpor port-forward service/karpor-server 7443:7443 &
+KARPOR_PID=$!
+echo "Karpor UI port forwarding started (PID: $KARPOR_PID)"
 
 echo "All port forwarding is active. Press Ctrl+C to terminate."
 
