@@ -1,0 +1,6 @@
+apiVersion: v2
+name: team-services
+description: A Helm chart that represent resources deployed by app team
+type: application
+version: 0.1.0
+appVersion: "1.0.0" 

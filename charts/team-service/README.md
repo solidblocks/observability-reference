@@ -1,10 +1,10 @@
-# Probes Helm Chart
+# Team services chart
 
-This Helm chart defines Probe custom resources for monitoring external targets with Prometheus Blackbox Exporter.
 
 ## Purpose
 
-The chart provides a structured way to define monitoring probes for external services using Prometheus's native Probe custom resource definition (CRD). This is a specialized resource type that integrates directly with the Prometheus Operator for blackbox-style monitoring.
+The chart provides a structured way to define monitoring probes for external services using Prometheus's native Probe custom resource definition (CRD). 
+This is a specialized resource type that integrates directly with the Prometheus Operator for blackbox-style monitoring.
 
 ## Usage
 

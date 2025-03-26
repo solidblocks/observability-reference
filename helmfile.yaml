@@ -23,20 +23,20 @@ releases:
     values:
       - values/blackbox-exporter-values.yaml 
       
-  - name: probes-backend
-    namespace: monitoring
+  - name: backend-service
+    namespace: backend-team
     createNamespace: true
-    chart: ./charts/probes
+    chart: ./charts/team-service
     needs:
       - monitoring/blackbox-exporter
     values:
       - values/probes-values.yaml
       - values/probes-backend-values.yaml
 
-  - name: probes-frontend
-    namespace: monitoring
+  - name: frontend-service
+    namespace: frontend-team
     createNamespace: true
-    chart: ./charts/probes
+    chart: ./charts/team-service
     needs:
       - monitoring/blackbox-exporter
     values:
