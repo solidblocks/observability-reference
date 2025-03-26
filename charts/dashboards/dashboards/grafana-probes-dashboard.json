@@ -474,7 +474,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "probe_success{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"}",
+            "expr": "probe_success{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"}",
             "format": "table",
             "instant": true,
             "interval": "",
@@ -486,7 +486,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "probe_http_ssl{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"} > 0",
+            "expr": "probe_http_ssl{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"} > 0",
             "format": "table",
             "instant": true,
             "interval": "",
@@ -498,7 +498,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "(probe_ssl_earliest_cert_expiry{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"} - time()) / 3600 / 24",
+            "expr": "(probe_ssl_earliest_cert_expiry{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"} - time()) / 3600 / 24",
             "format": "table",
             "instant": true,
             "interval": "",
@@ -510,7 +510,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "probe_http_status_code{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"} > 0",
+            "expr": "probe_http_status_code{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"} > 0",
             "format": "table",
             "instant": true,
             "interval": "",
@@ -522,7 +522,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "avg_over_time(probe_duration_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"}[1m])",
+            "expr": "avg_over_time(probe_duration_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"}[1m])",
             "format": "table",
             "hide": false,
             "instant": false,
@@ -536,7 +536,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "probe_tls_version_info{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"}",
+            "expr": "probe_tls_version_info{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"}",
             "format": "table",
             "instant": true,
             "interval": "",
@@ -548,7 +548,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "avg_over_time(probe_dns_lookup_time_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"}[1m])",
+            "expr": "avg_over_time(probe_dns_lookup_time_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"}[1m])",
             "format": "table",
             "instant": true,
             "interval": "",
@@ -759,7 +759,7 @@
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "expr": "sum(probe_http_duration_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"}) by (instance)",
+            "expr": "sum(probe_http_duration_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"}) by (instance)",
             "instant": false,
             "interval": "",
             "intervalFactor": 2,
@@ -870,7 +870,7 @@
                   "type": "prometheus",
                   "uid": "${DS_PROMETHEUS}"
                 },
-                "expr": "probe_http_duration_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\"}",
+                "expr": "probe_http_duration_seconds{job=~\"$job\", instance=~\"$instance\", team=~\"$team\", namespace=~\"$namespace\"}",
                 "interval": "",
                 "intervalFactor": 2,
                 "legendFormat": "{{ phase }}",
@@ -919,12 +919,30 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "definition": "label_values(probe_success, job)",
+          "definition": "label_values(probe_success{team=~\"$team\"}, namespace)",
+          "includeAll": true,
+          "label": "Namespace",
+          "name": "namespace",
+          "options": [],
+          "query": "label_values(probe_success{team=~\"$team\"}, namespace)",
+          "refresh": 1,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "allValue": ".+",
+          "current": {},
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "definition": "label_values(probe_success{team=~\"$team\", namespace=~\"$namespace\"}, job)",
           "includeAll": true,
           "label": "Job",
           "name": "job",
           "options": [],
-          "query": "label_values(probe_success, job)",
+          "query": "label_values(probe_success{team=~\"$team\", namespace=~\"$namespace\"}, job)",
           "refresh": 1,
           "regex": "",
           "sort": 2,
@@ -937,12 +955,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "definition": "label_values(probe_success{job=~\"$job\", team=~\"$team\"}, instance)",
+          "definition": "label_values(probe_success{team=~\"$team\", namespace=~\"$namespace\", job=~\"$job\"}, instance)",
           "includeAll": true,
           "label": "Instance",
           "name": "instance",
           "options": [],
-          "query": "label_values(probe_success{job=~\"$job\", team=~\"$team\"}, instance)",
+          "query": "label_values(probe_success{team=~\"$team\", namespace=~\"$namespace\", job=~\"$job\"}, instance)",
           "refresh": 1,
           "regex": "",
           "sort": 2,
