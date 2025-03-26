@@ -1,0 +1,15 @@
+# Basic configuration for Karpor
+# For more configuration options, see https://kusionstack.io/karpor/getting-started/installation
+# Resources configuration
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# Default server replicas
+server:
+  replicas: 1
+
