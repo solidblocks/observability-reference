@@ -23,7 +23,7 @@ releases:
     values:
       - values/blackbox-exporter-values.yaml 
       
-  - name: probes
+  - name: probes-backend
     namespace: monitoring
     createNamespace: true
     chart: ./charts/probes
@@ -31,6 +31,17 @@ releases:
       - monitoring/blackbox-exporter
     values:
       - values/probes-values.yaml
+      - values/probes-backend-values.yaml
+
+  - name: probes-frontend
+    namespace: monitoring
+    createNamespace: true
+    chart: ./charts/probes
+    needs:
+      - monitoring/blackbox-exporter
+    values:
+      - values/probes-values.yaml
+      - values/probes-frontend-values.yaml
 
   - name: karpor
     namespace: karpor

@@ -29,10 +29,9 @@ spec:
   prober:
     url:  blackbox-exporter-prometheus-blackbox-exporter:9115
     path: /probe
+  {{- with $.Values.metricRelabelings }}
   metricRelabelings:
-    - targetLabel: team
-      replacement: 'backend'
-    - targetLabel: environment
-      replacement: 'dev'
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }}
 {{- end }} 

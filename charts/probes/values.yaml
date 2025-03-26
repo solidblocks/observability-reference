@@ -31,3 +31,6 @@ probes:
 commonLabels:
   created-by: helm
   component: monitoring 
+
+# Common metric relabelings applied to all probes
+metricRelabelings: []
