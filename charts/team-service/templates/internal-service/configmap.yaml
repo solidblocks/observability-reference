@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-config
+  labels:
+    app: sample-service
+data:
+  {{- toYaml .Values.nginx.data | nindent 2 }}

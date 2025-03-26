@@ -34,3 +34,27 @@ commonLabels:
 
 # Common metric relabelings applied to all probes
 metricRelabelings: []
+
+nginx:
+  data:
+    nginx.conf: |
+      events {}
+      http {
+        server {
+          listen 8080;
+          
+          location / {
+            return 200 'Welcome to Sample Service';
+          }
+          
+          location /health {
+            access_log off;
+            return 200 'OK';
+          }
+          
+          location /metrics {
+            access_log off;
+            return 200 'sample_metric 1';
+          }
+        }
+      }

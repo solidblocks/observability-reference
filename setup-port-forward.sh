@@ -33,6 +33,10 @@ kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-alertmanager 9
 ALERTMANAGER_PID=$!
 echo "Alertmanager port forwarding started (PID: $ALERTMANAGER_PID)"
 
+kubectl -n backend-team port-forward service/sample-service 8080:8080 &
+BACKEND_PID=$!
+echo "Backend service port forwarding started (PID: $BACKEND_PID)"
+
 kubectl -n karpor port-forward service/karpor-server 7443:7443 &
 KARPOR_PID=$!
 echo "Karpor UI port forwarding started (PID: $KARPOR_PID)"
