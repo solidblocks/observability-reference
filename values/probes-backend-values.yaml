@@ -1,0 +1,37 @@
+# Backend team specific configuration
+
+# Custom name for resources
+nameOverride: "probes-backend"
+
+# Team-specific metric relabelings
+metricRelabelings:
+  - targetLabel: team
+    replacement: backend
+  - targetLabel: environment
+    replacement: dev
+
+# Select only backend-related probes or configure backend-specific settings
+probes:
+  # Keep only backend-related probes in this instance
+  # This is an example - adjust based on your actual backend services
+  - name: backend-api
+    url: https://api.example.com/health
+    module: http_2xx
+    interval: 30s
+    labels:
+      app: blackbox-exporter
+      category: api
+      team: backend
+    annotations:
+      description: "Health check for main backend API"
+  
+  - name: database-service
+    url: https://db-proxy.example.com/status
+    module: http_2xx
+    interval: 60s
+    labels:
+      app: blackbox-exporter
+      category: database
+      team: backend
+    annotations:
+      description: "Database service health check" 

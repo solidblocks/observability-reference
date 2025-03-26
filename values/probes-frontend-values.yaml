@@ -1,0 +1,48 @@
+# Frontend team specific configuration
+
+# Custom name for resources
+nameOverride: "probes-frontend"
+
+# Team-specific metric relabelings
+metricRelabelings:
+  - targetLabel: team
+    replacement: frontend
+  - targetLabel: environment
+    replacement: dev
+
+# Select only frontend-related probes or configure frontend-specific settings
+probes:
+  # Keep only frontend-related probes in this instance
+  # This is an example - adjust based on your actual frontend services
+  - name: main-website
+    url: https://www.example.com
+    module: https_2xx
+    interval: 30s
+    labels:
+      app: blackbox-exporter
+      category: website
+      team: frontend
+    annotations:
+      description: "Company main website monitoring"
+  
+  - name: customer-portal
+    url: https://portal.example.com/
+    module: https_2xx
+    interval: 30s
+    labels:
+      app: blackbox-exporter
+      category: webapp
+      team: frontend
+    annotations:
+      description: "Customer portal web application"
+      
+  - name: cdn-status
+    url: https://cdn.example.com/status
+    module: http_2xx
+    interval: 60s
+    labels:
+      app: blackbox-exporter
+      category: infrastructure
+      team: frontend
+    annotations:
+      description: "CDN service status check" 
