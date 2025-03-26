@@ -43,6 +43,15 @@ releases:
       - values/probes-values.yaml
       - values/probes-frontend-values.yaml
 
+  - name: dashboards
+    namespace: monitoring
+    createNamespace: true
+    chart: ./charts/dashboards
+    needs:
+      - monitoring/prometheus
+    values:
+      - values/dashboards-values.yaml
+
   - name: karpor
     namespace: karpor
     createNamespace: true

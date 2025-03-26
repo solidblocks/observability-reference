@@ -1,0 +1,11 @@
+# Values for the dashboards chart
+
+# Additional labels to add to the dashboard ConfigMap
+additionalLabels:
+  grafana_dashboard: "1"  # This ensures Grafana discovers the dashboard
+
+# Data source configuration
+datasource:
+  # The UID of the Prometheus data source in Grafana
+  # 'prometheus' is the default in kube-prometheus-stack
+  uid: prometheus 

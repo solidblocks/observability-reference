@@ -1,0 +1,13 @@
+# Default values for dashboards chart
+
+# Namespace where the dashboards will be deployed
+namespace: monitoring
+
+# Additional labels to add to the dashboard ConfigMap
+additionalLabels: {}
+
+# Data source configuration
+datasource:
+  # The UID of the Prometheus data source in Grafana
+  # 'prometheus' is the default in kube-prometheus-stack
+  uid: prometheus 
