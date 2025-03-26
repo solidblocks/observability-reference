@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: {{ .Values.nginx.serviceName }}
+  labels:
+    {{- include "probes.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  interval: 15s
+  scrapeTimeout: 15s
+  module: http_2xx
+  targets:
+    staticConfig:
+      static:
+        - http://{{ .Values.nginx.serviceName }}.{{ $.Release.Namespace }}.svc.cluster.local:8080
+  prober:
+    url:  blackbox-exporter-prometheus-blackbox-exporter:9115
+    path: /probe
+  {{- with $.Values.metricRelabelings }}
+  metricRelabelings:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
