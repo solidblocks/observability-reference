@@ -36,6 +36,7 @@ commonLabels:
 metricRelabelings: []
 
 nginx:
+  serviceName: sample-service
   data:
     nginx.conf: |
       events {}

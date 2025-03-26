@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample-service
+  name: {{ .Values.nginx.serviceName }}
   labels:
-    app: sample-service
+    app: {{ .Values.nginx.serviceName }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sample-service
+      app: {{ .Values.nginx.serviceName }}
   template:
     metadata:
       labels:
-        app: sample-service
+        app: {{ .Values.nginx.serviceName }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

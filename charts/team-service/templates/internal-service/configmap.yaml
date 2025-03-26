@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ .Chart.Name }}-config
   labels:
-    app: sample-service
+    app: {{ .Values.nginx.serviceName }}
 data:
   {{- toYaml .Values.nginx.data | nindent 2 }}

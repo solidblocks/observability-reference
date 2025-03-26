@@ -2,6 +2,8 @@
 
 # Custom name for resources
 nameOverride: "probes-backend"
+nginx:
+  serviceName: backend-service
 
 # Team-specific metric relabelings
 metricRelabelings:

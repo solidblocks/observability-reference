@@ -3,6 +3,9 @@
 # Custom name for resources
 nameOverride: "probes-frontend"
 
+nginx:
+  serviceName: frontend-service
+
 # Team-specific metric relabelings
 metricRelabelings:
   - targetLabel: team
