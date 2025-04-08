@@ -52,9 +52,9 @@ releases:
     values:
       - values/dashboards-values.yaml
 
-  - name: karpor
-    namespace: karpor
-    createNamespace: true
-    chart: kusionstack/karpor
-    values:
-      - values/karpor-values.yaml
+  # - name: karpor
+  #   namespace: karpor
+  #   createNamespace: true
+  #   chart: kusionstack/karpor
+  #   values:
+  #     - values/karpor-values.yaml
