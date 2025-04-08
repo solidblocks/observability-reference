@@ -18,6 +18,8 @@ echo "Grafana will be available at http://localhost:3000"
 echo "Prometheus will be available at http://localhost:9090"
 echo "Alertmanager will be available at http://localhost:9093"
 echo "Karpor UI will be available at https://localhost:7443"
+echo "OTel Collector OTLP gRPC will be available at localhost:4317"
+echo "OTel Collector OTLP HTTP will be available at localhost:4318"
 echo "Press Ctrl+C to stop port forwarding"
 
 # Start port forwarding
@@ -40,6 +42,10 @@ echo "Backend service port forwarding started (PID: $BACKEND_PID)"
 kubectl -n karpor port-forward service/karpor-server 7443:7443 &
 KARPOR_PID=$!
 echo "Karpor UI port forwarding started (PID: $KARPOR_PID)"
+
+kubectl -n monitoring port-forward service/otel-collector-main-collector 4317:4317 4318:4318 &
+OTEL_PID=$!
+echo "OTel Collector port forwarding started (PID: $OTEL_PID)"
 
 echo "All port forwarding is active. Press Ctrl+C to terminate."
 
