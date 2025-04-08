@@ -4,9 +4,22 @@ repositories:
     url: https://prometheus-community.github.io/helm-charts
   - name: kusionstack
     url: https://kusionstack.github.io/charts
+  - name: open-telemetry
+    url: https://open-telemetry.github.io/opentelemetry-helm-charts
+  - name: jetstack
+    url: https://charts.jetstack.io
 
 # Releases section
 releases:
+  - name: cert-manager
+    namespace: cert-manager
+    createNamespace: true
+    chart: jetstack/cert-manager
+    version: v1.15.0 
+    wait: true
+    values:
+      - installCRDs: true
+
   - name: prometheus
     namespace: monitoring
     createNamespace: true
@@ -51,6 +64,23 @@ releases:
       - monitoring/prometheus
     values:
       - values/dashboards-values.yaml
+
+  - name: otel-operator
+    namespace: opentelemetry-operator-system
+    createNamespace: true
+    chart: open-telemetry/opentelemetry-operator
+    version: 0.82.2
+    needs:
+      - cert-manager/cert-manager
+    wait: true
+    values:
+     - values/otel-operator-values.yaml
+    hooks:
+      - name: apply-otel-collector-manifest
+        events: ["postsync"]
+        showlogs: true
+        command: "kubectl"
+        args: ["apply", "-n", "monitoring", "-f", "manifests/otel-collector.yaml"]
 
   # - name: karpor
   #   namespace: karpor
