@@ -69,7 +69,7 @@ releases:
     namespace: opentelemetry-operator-system
     createNamespace: true
     chart: open-telemetry/opentelemetry-operator
-    version: 0.82.2
+    version: 0.84.2
     needs:
       - cert-manager/cert-manager
     wait: true

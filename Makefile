@@ -1,4 +1,4 @@
-.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward
+.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel
 
 setup-tools:
 	@echo "Setting up required tools..."
@@ -39,6 +39,7 @@ help:
 	@echo "  clean     - Clean up resources"
 	@echo "  debug-cluster - Show detailed cluster information"
 	@echo "  port-forward - Set up port forwarding for Grafana, Prometheus, and Alertmanager"
+	@echo "  test-otel    - Send test OTLP data using otel-cli via port-forward"
 
 debug-cluster:
 	@echo "=== Colima Cluster Debug Info ==="
@@ -48,6 +49,10 @@ debug-cluster:
 	kubectl describe nodes | grep -A 5 "Allocated resources"
 	@echo "\n=== Pods Status ==="
 	kubectl get pods -A
+	@echo "\n=== OTel Operator Version ==="
+	@kubectl get pods -n opentelemetry-operator-system -l app.kubernetes.io/name=opentelemetry-operator -o jsonpath='{.items[0].spec.containers[0].image}' | sed 's/.*://' | xargs -I {} echo "Operator Image Tag: {}" || echo "Operator pod not found or image tag unavailable."
+	@echo "\n=== OTel Collector Version ==="
+	@kubectl get pods -n monitoring -l app.kubernetes.io/managed-by=opentelemetry-operator -o jsonpath='{.items[0].spec.containers[0].image}' | sed 's/.*://' | xargs -I {} echo "Collector Image Tag: {}" || echo "Collector pod not found or image tag unavailable."
 	@echo "\n=== Recent Events ==="
 	kubectl get events --sort-by='.lastTimestamp' -A | tail -n 20
 	@echo "\n=== Colima Status ==="
@@ -57,3 +62,11 @@ port-forward:
 	@echo "Starting port forwarding..."
 	@chmod +x setup-port-forward.sh
 	./setup-port-forward.sh
+
+test-otel:
+	@echo "Sending test OTLP data via otel-cli..."
+	@echo "Ensure port-forward is running in another terminal (make port-forward)"
+	@chmod +x scripts/send-otel-test.sh
+	./scripts/send-otel-test.sh
+	@echo "\nFetching recent collector logs (expecting to see the spans above)..."
+	@kubectl logs -n monitoring -l app.kubernetes.io/managed-by=opentelemetry-operator --tail 20 || echo "Could not fetch collector logs. Is the collector running?"
