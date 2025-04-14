@@ -4,6 +4,27 @@ metadata:
   name: otel-collector-main
   namespace: monitoring
 spec:
+  env:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: otel-aws-creds      # Name of your Kubernetes secret
+          key: aws_access_key_id   # Key within the secret
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: otel-aws-creds
+          key: aws_secret_access_key
+    - name: AWS_REGION
+      valueFrom:
+        secretKeyRef:
+          name: otel-aws-creds
+          key: aws_region
+    - name: TARGET_ROLE_ARN
+      valueFrom:
+        secretKeyRef:
+          name: otel-aws-creds
+          key: target_role_arn
   config:
     receivers:
       otlp:
@@ -28,10 +49,13 @@ spec:
         endpoint: "jaeger-collector.monitoring.svc.cluster.local:4317"
         tls:
           insecure: true
+      awsxray:
+        role_arn: "${env:TARGET_ROLE_ARN}"
+        region: "eu-west-1"
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [otlp, debug]
+          exporters: [otlp, debug, awsxray]
