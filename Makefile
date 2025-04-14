@@ -1,4 +1,4 @@
-.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel list-images
+.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel list-images generate-traces
 
 setup-tools:
 	@echo "Setting up required tools..."
@@ -40,6 +40,7 @@ help:
 	@echo "  debug-cluster - Show detailed cluster information"
 	@echo "  port-forward - Set up port forwarding for Grafana, Prometheus, and Alertmanager"
 	@echo "  test-otel    - Send test OTLP data using otel-cli via port-forward"
+	@echo "  generate-traces - Generate traces using telemetrygen"
 	@echo "  list-images  - List all unique container images running in the cluster"
 
 debug-cluster:
@@ -70,6 +71,13 @@ test-otel:
 	@chmod +x scripts/send-otel-test.sh
 	./scripts/send-otel-test.sh
 	@echo "\nFetching recent collector logs (expecting to see the spans above)..."
+	@kubectl logs -n monitoring -l app.kubernetes.io/managed-by=opentelemetry-operator --tail 20 || echo "Could not fetch collector logs. Is the collector running?"
+
+generate-traces:
+	@echo "Generating traces using telemetrygen..."
+	@echo "Ensure port-forward is running in another terminal (make port-forward)"
+	telemetrygen traces --otlp-insecure --traces 3
+	@echo "\nFetching recent collector logs (expecting to see the spans)..."
 	@kubectl logs -n monitoring -l app.kubernetes.io/managed-by=opentelemetry-operator --tail 20 || echo "Could not fetch collector logs. Is the collector running?"
 
 list-images:

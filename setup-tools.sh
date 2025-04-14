@@ -21,4 +21,8 @@ else
     exit 1
 fi
 
+# Install telemetrygen Go tool
+echo "Installing telemetrygen..."
+go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@latest
+
 echo "All tools setup complete!" 

@@ -25,7 +25,7 @@ spec:
       debug: 
         verbosity: detailed
       otlp:
-        endpoint: "jaeger.monitoring.svc.cluster.local:4317"
+        endpoint: "jaeger-collector.monitoring.svc.cluster.local:4317"
         tls:
           insecure: true
 
