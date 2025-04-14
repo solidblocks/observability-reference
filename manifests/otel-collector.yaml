@@ -24,10 +24,14 @@ spec:
     exporters:
       debug: 
         verbosity: detailed
+      otlp:
+        endpoint: "jaeger.monitoring.svc.cluster.local:4317"
+        tls:
+          insecure: true
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [debug]
+          exporters: [otlp, debug]

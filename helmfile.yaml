@@ -8,6 +8,8 @@ repositories:
     url: https://open-telemetry.github.io/opentelemetry-helm-charts
   - name: jetstack
     url: https://charts.jetstack.io
+  - name: jaegertracing
+    url: https://jaegertracing.github.io/helm-charts
 
 # Releases section
 releases:
@@ -65,6 +67,17 @@ releases:
     values:
       - values/dashboards-values.yaml
 
+  - name: jaeger
+    namespace: monitoring
+    createNamespace: true
+    chart: jaegertracing/jaeger
+    version: 0.71.5
+    wait: true
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - values/jaeger-values.yaml
+
   - name: otel-operator
     namespace: opentelemetry-operator-system
     createNamespace: true
@@ -72,6 +85,7 @@ releases:
     version: 0.84.2
     needs:
       - cert-manager/cert-manager
+      - monitoring/jaeger
     wait: true
     values:
      - values/otel-operator-values.yaml
