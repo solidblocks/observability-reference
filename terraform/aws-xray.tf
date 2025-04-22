@@ -1,26 +1,3 @@
-# main.tf
-
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0" # Use a recent version of the AWS provider
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.0" # Use a recent version of the Kubernetes provider
-    }
-  }
-}
-
-provider "aws" {
-  # Configure your AWS provider as needed (e.g., region, profile)
-  # region = "us-east-1" # Example region
-}
-
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
 #    This will be attached to the role the user assumes.
 resource "aws_iam_policy" "otel_collector_xray_write_policy" {
   name        = "OtelCollectorXRayWriteAccess"
