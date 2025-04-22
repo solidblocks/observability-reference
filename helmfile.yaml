@@ -29,6 +29,15 @@ releases:
     version: 70.3.0
     values:
       - values/prometheus-values.yaml 
+    hooks:
+      - events: ["postuninstall"]
+        showlogs: true
+        command: "echo"
+        args: ["Grafana X-Ray datasource requires the grafana-x-ray-datasource plugin and proper configuration"]
+      - events: ["postupgrade"]
+        showlogs: true
+        command: "echo"
+        args: ["Check Grafana X-Ray datasource configuration and test the connection!"]
 
   - name: blackbox-exporter
     namespace: monitoring

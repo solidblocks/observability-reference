@@ -32,7 +32,7 @@ resource "aws_iam_role" "grafana_xray_reader_role" {
 # 3. Attach the read-only policy to the Grafana reader role
 resource "aws_iam_role_policy_attachment" "grafana_xray_read_policy_attachment" {
   role       = aws_iam_role.grafana_xray_reader_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSXRayReadOnlyAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AWSXrayReadOnlyAccess"
 }
 
 # --- Grafana Assumer User and Credentials ---
@@ -76,23 +76,39 @@ resource "aws_iam_access_key" "grafana_user_key" {
   user = aws_iam_user.grafana_assumer_user.name
 }
 
-# 8. Create a Kubernetes secret with the Grafana assumer user's access key
-#    This secret should be created in the same namespace Grafana runs in.
-#    Update 'namespace' if Grafana is not in the 'monitoring' namespace.
-resource "kubernetes_secret" "grafana_aws_creds" {
+# 9. Create a Kubernetes secret with the complete datasource configuration
+resource "kubernetes_secret" "grafana_xray_datasource" {
   metadata {
-    name = "grafana-aws-creds" # Name of the secret Grafana will use
-    # IMPORTANT: Change this namespace to where your Grafana is running
+    name = "grafana-xray-datasource"
     namespace = "monitoring"
+    labels = {
+      grafana_datasource = "1" # This label tells Grafana to load this as a datasource
+    }
   }
+
   data = {
-    # Keys expected by Grafana/AWS SDK
-    AWS_ACCESS_KEY_ID     = aws_iam_access_key.grafana_user_key.id
-    AWS_SECRET_ACCESS_KEY = aws_iam_access_key.grafana_user_key.secret
+    # Entire datasource configuration in JSON format
+    "datasource.yaml" = <<-EOT
+apiVersion: 1
+datasources:
+- name: X-Ray
+  type: grafana-x-ray-datasource
+  access: proxy
+  isDefault: false
+  jsonData:
+    authType: keys
+    assumeRoleArn: ${aws_iam_role.grafana_xray_reader_role.arn}
+    defaultRegion: eu-west-1
+  secureJsonData:
+    accessKey: ${aws_iam_access_key.grafana_user_key.id}
+    secretKey: ${aws_iam_access_key.grafana_user_key.secret}
+  version: 1
+  editable: true
+EOT
   }
+
   type = "Opaque"
 }
-
 
 # --- Outputs --- # Duplicated for now, will remove from aws-xray.tf next
 

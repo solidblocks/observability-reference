@@ -3,6 +3,18 @@ grafana:
   adminPassword: admin
   ingress:
     enabled: false
+  
+  # Enable sidecar for datasource provisioning from secrets
+  sidecar:
+    datasources:
+      enabled: true
+      label: grafana_datasource   # The label that the configmaps or secrets are marked with
+      labelValue: "1"             # The label value to look for
+      searchNamespace: "monitoring" # If specified, the sidecar will search for datasource config in this namespace
+  
+  # Add the plugin to the list of plugins to install
+  plugins:
+    - grafana-x-ray-datasource
 
 prometheus:
   prometheusSpec:
