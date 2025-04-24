@@ -1,8 +1,9 @@
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
-  name: otel-collector-main
-  namespace: monitoring
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
 spec:
   env:
     - name: AWS_ACCESS_KEY_ID
@@ -58,4 +59,4 @@ spec:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [otlp, debug, awsxray]
+          exporters: [otlp, debug, awsxray] 

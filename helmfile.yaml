@@ -98,16 +98,9 @@ releases:
     wait: true
     values:
      - values/otel-operator-values.yaml
-    hooks:
-      - name: apply-otel-collector-manifest
-        events: ["postsync"]
-        showlogs: true
-        command: "kubectl"
-        args: ["apply", "-n", "monitoring", "-f", "manifests/otel-collector.yaml"]
 
-  # - name: karpor
-  #   namespace: karpor
-  #   createNamespace: true
-  #   chart: kusionstack/karpor
-  #   values:
-  #     - values/karpor-values.yaml
+  - name: otel-config
+    namespace: monitoring
+    chart: ./charts/otel-config
+    needs:
+      - opentelemetry-operator-system/otel-operator

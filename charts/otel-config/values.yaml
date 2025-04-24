@@ -1,0 +1,4 @@
+# Default values for otel-config chart. 
+
+# Configuration for the tracegen job
+tracesCount: 10

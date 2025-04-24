@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-tracegen
+  labels:
+    app: {{ .Release.Name }}-tracegen
+spec:
+  schedule: "*/3 * * * *"  # Run every 3 minutes
+  concurrencyPolicy: Allow
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ .Release.Name }}-tracegen
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: tracegen
+              image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/tracegen:v0.63.0
+              command:
+                - /tracegen
+                - "-traces"
+                - "{{ .Values.tracesCount }}"
+                - "-otlp-insecure"
+                - "-otlp-endpoint"
+                - "{{ .Release.Name }}-collector:4317" 

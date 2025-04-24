@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for OpenTelemetry configuration and trace generation
+name: otel-config
+version: 0.1.0 
