@@ -1,4 +1,4 @@
-.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel list-images generate-traces
+.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel list-images generate-traces tf-apply tf-plan
 
 setup-tools:
 	@echo "Setting up required tools..."
@@ -12,6 +12,16 @@ setup: setup-tools
 apply:
 	@echo "Applying Prometheus Stack with helmfile..."
 	helmfile apply
+
+tf-apply:
+	@echo "Applying Terraform configuration in ./terraform..."
+	cd terraform && terraform init
+	cd terraform && terraform apply
+
+tf-plan:
+	@echo "Plan Terraform configuration in ./terraform..."
+	cd terraform && terraform apply
+
 
 destroy:
 	@echo "Helmfile destroy..."
@@ -42,6 +52,7 @@ help:
 	@echo "  test-otel    - Send test OTLP data using otel-cli via port-forward"
 	@echo "  generate-traces - Generate traces using telemetrygen"
 	@echo "  list-images  - List all unique container images running in the cluster"
+	@echo "  tf-apply  - Apply Terraform configuration"
 
 debug-cluster:
 	@echo "=== Colima Cluster Debug Info ==="
