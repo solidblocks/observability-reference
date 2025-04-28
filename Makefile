@@ -1,4 +1,4 @@
-.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel list-images generate-traces tf-apply tf-plan
+.PHONY: setup apply destroy clean debug-cluster setup-tools port-forward test-otel list-images generate-traces tf-apply tf-plan tf-destroy
 
 setup-tools:
 	@echo "Setting up required tools..."
@@ -22,6 +22,9 @@ tf-plan:
 	@echo "Plan Terraform configuration in ./terraform..."
 	cd terraform && terraform apply
 
+tf-destroy:
+	@echo "Destroying Terraform resources in ./terraform..."
+	cd terraform && terraform destroy
 
 destroy:
 	@echo "Helmfile destroy..."
@@ -53,6 +56,7 @@ help:
 	@echo "  generate-traces - Generate traces using telemetrygen"
 	@echo "  list-images  - List all unique container images running in the cluster"
 	@echo "  tf-apply  - Apply Terraform configuration"
+	@echo "  tf-destroy - Destroy Terraform resources"
 
 debug-cluster:
 	@echo "=== Colima Cluster Debug Info ==="
