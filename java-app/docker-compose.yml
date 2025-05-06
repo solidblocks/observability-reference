@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "18080:18080"
+    environment:
+      # Override the collector endpoint to point to the port-forwarded K8s collector
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318
+      - OTEL_SERVICE_NAME=demo-service
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=none
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_JAVAAGENT_DEBUG=false
+    network_mode: host

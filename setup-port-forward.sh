@@ -44,7 +44,7 @@ kubectl -n karpor port-forward service/karpor-server 7443:7443 &
 KARPOR_PID=$!
 echo "Karpor UI port forwarding started (PID: $KARPOR_PID)"
 
-kubectl -n monitoring port-forward service/otel-collector-main-collector 4317:4317 4318:4318 &
+kubectl -n monitoring port-forward service/otel-config-collector 4317:4317 4318:4318 &
 OTEL_PID=$!
 echo "OTel Collector port forwarding started (PID: $OTEL_PID)"
 

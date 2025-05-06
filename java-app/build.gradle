@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.4'
+    // The io.spring.dependency-management plugin is automatically applied
+    // by the org.springframework.boot plugin, so you don't need to list it here.
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo Spring Boot application'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral() // This should allow Gradle to find the Spring Boot dependencies
+    // If you have other repositories, ensure they are not configured in a way
+    // that prevents checking Maven Central for these dependencies.
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.4'
+
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools:3.3.3'
+
+    implementation 'io.opentelemetry:opentelemetry-api:1.43.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk:1.43.0'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:2.7.0'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
