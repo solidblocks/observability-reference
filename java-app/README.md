@@ -26,7 +26,7 @@ The application requires an OpenTelemetry collector to be running and accessible
 Access the application at:
 - Application endpoint: http://localhost:18080
 - Actuator endpoints: http://localhost:18080/actuator
-- Prometheus metrics: http://localhost:18080/actuator/prometheus
+- Prometheus metrics: http://localhost:18080/actuator/metrics
 
 Send a request to generate some telemetry:
 ```bash
