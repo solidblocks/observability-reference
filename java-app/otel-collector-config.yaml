@@ -18,10 +18,16 @@ exporters:
       insecure: true
   debug:
     verbosity: detailed
+  prometheus:
+    endpoint: "0.0.0.0:8889"
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp, debug] 
+      exporters: [otlp, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus, debug] 
